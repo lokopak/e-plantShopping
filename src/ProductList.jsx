@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { addItem } from "./CartSlice";
 import ProductCard from "./ProductCard";
@@ -13,6 +13,8 @@ function ProductList() {
 
   const [addedToCart, setAddedToCart] = useState({});
 
+  const cartItems = useSelector((state) => state.cart);
+
   const styleObj = {
     backgroundColor: "#4CAF50",
     color: "#fff!important",
@@ -22,17 +24,20 @@ function ProductList() {
     alignIems: "center",
     fontSize: "20px",
   };
+
   const styleObjUl = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "1100px",
   };
+
   const styleA = {
     color: "white",
     fontSize: "30px",
     textDecoration: "none",
   };
+
   const handleCartClick = (e) => {
     e.preventDefault();
     setShowCart(true); // Set showCart to true when cart icon is clicked
@@ -52,6 +57,10 @@ function ProductList() {
   const handleAddToCart = (plant) => {
     dispatch(addItem(plant));
     setAddedToCart((prevState) => ({ ...prevState, [plant.name]: true }));
+  };
+
+  const totalAddedToCart = () => {
+    return cartItems.items.length;
   };
 
   return (
@@ -82,6 +91,9 @@ function ProductList() {
             {" "}
             <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
               <h1 className="cart">
+                <span className="cart_quantity_count">
+                  {totalAddedToCart()}
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
