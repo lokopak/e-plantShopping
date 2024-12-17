@@ -7,13 +7,17 @@ const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
+  const getItemCost = (item) => {
+    return item.cost.replace(/\$/, "");
+  };
+
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
     if (cart.length) {
       const total = cart.reduce(
         (prev, curr) =>
           // Remove dolar sign
-          prev + parseInt(curr.cost.replace(/\$/, "") * curr.quantity),
+          prev + parseInt(getItemCost(curr) * curr.quantity),
         0
       );
       return total;
@@ -40,7 +44,9 @@ const CartItem = ({ onContinueShopping }) => {
   const handleRemove = (item) => {};
 
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {};
+  const calculateTotalCost = (item) => {
+    return getItemCost(item) * item.quantity;
+  };
 
   const handleCheckoutShopping = (e) => {
     alert("Functionality to be added for future reference");
